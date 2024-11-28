@@ -8,7 +8,13 @@ from tqdm.auto import tqdm
 
 QA_MAX_ANSWER_LENGTH = 30
 
-
+# This function maps the BioASQ dataset to a QA format supported by Huggingface 
+def map_to_qa(example):
+    return {
+        'question': example['body'],
+        'context': ' '.join([snippet['text'] for snippet in example['snippets']]),
+        'answer': example['ideal_answer']
+    }
 # This function preprocesses an NLI dataset, tokenizing premises and hypotheses.
 def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
     max_seq_length = tokenizer.model_max_length if max_seq_length is None else max_seq_length
